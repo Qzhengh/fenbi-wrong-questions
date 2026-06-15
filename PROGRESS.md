@@ -45,7 +45,7 @@
 - [x] 阶段 3：放大走阶梯（江西/广东/国考三套排版正常）✅
 - [x] 阶段 4：收尾质检（四层）—— 三套卷全部通过 ✅
 - [x] 阶段 5：封装「抓取插件」（方案 B）—— 已验证 ✅
-- [~] **阶段 6：纯一键方案 C —— v0.3.0 已建(未测)，进行中 ← 当前**
+- [x] 阶段 6：纯一键方案 C —— 已验证 ✅
 
 ## 阶段 5 进展（方案 B：半插件/浏览器抓取器）✅
 **目标**：消灭两大摩擦点——手动导 txt、手动补加密图。**排版引擎不动**，仍用现有 parse+build。
@@ -56,28 +56,19 @@
 - v0.2.1：解决首次加载需多次刷新问题，通过 `injectImmediately` 最早注入拦截器，实现打开页面即变绿 (2/2)。
 - 本地 `unbundle.py → parse.py → build_docx.js` 流程验证通过，Word 无缺失。
 
-## 阶段 6（进行中）★当前
+## 阶段 6 ✅
 **目标**：纯一键方案 C —— 浏览器内直接生成 `错题集.docx`， eliminating 命令行步骤。
 
-**已做（v0.3.0，待真实页验证）**：
+**已完成（v0.3.0，已验证）**：
 - 引入 `docx` 浏览器构建（`fenbi-grabber/docx.min.js`，IIFE，约 1.1MB）。
 - 新建 `parser.js`：在浏览器内复刻 `parse.py` 的 card 树遍历、HTML 拆 parts、错题筛选。
 - 新建 `docx-builder.js`：在浏览器内复刻 `build_docx.js` 的排版、图片嵌入、答案页、缺图占位。
 - 改造 `content.js`：抓到数据+图片后，调用 `FenbiParser.buildItems` + `FenbiDocxBuilder.buildDocx`，用 `docx.Packer.toBlob` 直接下载 `错题集.docx`；同时下载 bundle 备份。
 - 更新 `manifest.json` v0.3.0，注入新脚本；更新 `安装说明.md`；本地 `parse.py` / `build_docx.js` 保留为 fallback。
+- 真实粉笔页验证通过：点击按钮直接下载 `错题集.docx`，图文正常。
+- 项目已上传 GitHub：https://github.com/Qzhengh/fenbi-wrong-questions
 
-**立即下一步（必须在真实粉笔页验证）**：
-1. Chrome `chrome://extensions` 里刷新插件。
-2. 打开粉笔报告/解析页，等按钮变绿 `(2/2)`。
-3. 点按钮，浏览器下载 `错题集.docx` + bundle 备份。
-4. 打开 Word 检查：
-   - 标题、题号、板块正确
-   - 图片/公式正常显示
-   - 答案页在末尾
-   - 无缺失或仅少量缺失
-5. 把结果发回：成功/失败、缺图数量、Console 里 `[FENBI-GRABBER]` 相关错误。
-
-**风险/边界**：浏览器内生成 docx 体积较大；公式 inline 排版需完整复刻；缺图时 Word 仍有占位框。
+**风险/边界**：浏览器内生成 docx 体积较大；公式 inline 排版已复刻；缺图时 Word 仍有占位框，可回退到方案 B 手动补图。
 
 ## 数据来源结论（阶段0产出，关键！）
 - **题目素材** 来自 `solution` 请求：每题 `solutions[]` 含 `globalId`(题号) / `content`(题干HTML) / `accessories`(选项,type101文字/102图片) / `correctAnswer`(标准答案,choice) / `solution`(解析HTML) / `source`(出处) / `keypoints`(考点) / `type`。
