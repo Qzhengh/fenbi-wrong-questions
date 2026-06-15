@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "粉笔错题数据抓取器",
+  "version": "0.3.0",
+  "description": "在粉笔报告/解析页一键抓取错题数据与图片，直接生成 错题集.docx。",
+  "permissions": ["webRequest", "scripting", "webNavigation"],
+  "host_permissions": [
+    "*://*.fenbi.com/*",
+    "*://*.fenbike.cn/*",
+    "*://*.fbstatic.cn/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.fenbi.com/*", "*://*.fenbike.cn/*"],
+      "js": ["interceptor.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://*.fenbi.com/*", "*://*.fenbike.cn/*"],
+      "js": ["docx.min.js", "parser.js", "docx-builder.js", "content.js"],
+      "run_at": "document_idle",
+      "world": "ISOLATED",
+      "all_frames": true
+    }
+  ]
+}

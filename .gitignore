@@ -1,0 +1,31 @@
+# Chrome 扩展打包私钥（敏感，勿提交）
+*.pem
+*.crx
+
+# 依赖（如后续在项目中用 npm）
+node_modules/
+package-lock.json
+package.json
+
+# 运行产物 / 用户数据
+images/
+errors.json
+错题集.docx
+缺图清单.txt
+solution.txt
+getReport.txt
+fenbi-bundle-*.json
+__pycache__/
+*.pyc
+
+# 系统/编辑器
+.DS_Store
+.claude/
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# 临时文件
+*.tmp
+*.log
