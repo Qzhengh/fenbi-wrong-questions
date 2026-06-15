@@ -52,6 +52,14 @@ node build_docx.js
 
 - v0.3.0：纯一键，浏览器内直接生成 Word
 
+## 已知问题与维护备忘
+
+- **缺图**：少量粉笔加密图 canvas 拿不到时，Word 会显示橙色占位框，可下载 bundle 走命令行 fallback 手动补图。
+- **粉笔改版风险**：若页面结构或接口 URL 变化，优先检查：
+  - `fenbi-grabber/interceptor.js` 中的 `solution` / `getReport` URL 匹配规则
+  - `fenbi-grabber/parser.js` 中的 card 树遍历（`nodeType` 1/2）
+- **升级 docx 库**：运行 `npm install docx@latest`，然后复制 `node_modules/docx/dist/index.iife.js` 覆盖 `fenbi-grabber/docx.min.js`。
+
 ## 注意
 
 - 扩展私钥文件 `fenbi-grabber.pem` 没有上传到 GitHub，请自行妥善保存。
